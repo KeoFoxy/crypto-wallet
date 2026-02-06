@@ -1,0 +1,12 @@
+services:
+  db:
+    container_name: crypto_wallet_db
+    image: postgres
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PWD}
+    ports:
+      - "5432:5432"
