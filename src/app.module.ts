@@ -6,6 +6,7 @@ import { AppService } from '@/app.service';
 import configuration from '@/configs/configuration';
 import dbConfig from '@/configs/database.config';
 import { DatabaseEnvType } from './configs/types';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { DatabaseEnvType } from './configs/types';
         };
       },
     }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

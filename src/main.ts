@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { ConsoleLogger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule } from '@nestjs/swagger';
@@ -6,7 +6,9 @@ import { AppModule } from '@/app.module';
 import { swaggerConfig } from '@/configs/swagger.config';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    logger: new ConsoleLogger({ json: true, colors: true }),
+  });
 
   app.set('query parser', 'extended');
   app.setGlobalPrefix('api');
