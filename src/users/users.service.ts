@@ -21,6 +21,10 @@ export class UsersService {
     return this.usersRepository.findAllUsers(query);
   }
 
+  async findUserByLogin(login: string, withPass: boolean = false) {
+    return await this.usersRepository.findUserByLoginOrEmail(login, withPass);
+  }
+
   findUserById(id: string) {
     return this.usersRepository.findUserById(id);
   }

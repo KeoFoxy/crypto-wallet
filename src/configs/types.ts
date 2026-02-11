@@ -1,5 +1,6 @@
 export type EnvType = {
   nodeEnv: string;
+  jwtSecret: string;
 };
 
 export type DatabaseEnvType = {

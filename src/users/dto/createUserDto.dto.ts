@@ -10,7 +10,7 @@ export class CreateUserDto {
   login: string;
 
   @IsString()
-  @IsStrongPassword()
+  // @IsStrongPassword()
   password: string;
 
   @IsInt()
