@@ -1,6 +1,6 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { Brackets, DataSource, EntityManager, Repository } from 'typeorm';
+import { Brackets, DataSource, EntityManager, QueryFailedError, Repository } from 'typeorm';
 import { PaginationDto } from '@/common/dtos/paginationDto.dto';
 import { SortDirection } from '@/common/enums/sortDirection.enum';
 import { InfiniteDataResponseType } from '@/common/types/infiniteDataResponse.type';
@@ -23,8 +23,23 @@ export class UsersRepository extends BaseRepository implements IUsersRepository 
   }
 
   async createNewUser(userData: CreateUserDto): Promise<User> {
-    const entity = this.repo().create(userData);
-    return await this.repo().save(entity);
+    try {
+      const entity = this.repo().create(userData);
+      return await this.repo().save(entity);
+    } catch (e) {
+    // Postgres unique violation
+      if (e instanceof QueryFailedError && '23505' === (e).driverError?.code) {
+        const detail = (e as any).driverError?.detail as string | undefined;
+
+        if (detail?.includes('(login)'))
+          throw new ConflictException('Login already taken');
+        if (detail?.includes('(email)'))
+          throw new ConflictException('Email already taken');
+
+        throw new ConflictException('User already exists');
+      }
+      throw e;
+    }
   }
 
   async findAllUsers(queryParams: PaginationDto): Promise<InfiniteDataResponseType<User>> {
