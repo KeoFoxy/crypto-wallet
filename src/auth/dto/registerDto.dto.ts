@@ -1,7 +1,6 @@
-import { IsEmail, IsEnum, IsInt, IsNotEmpty, IsOptional, IsPositive, IsString, IsStrongPassword, MaxLength } from 'class-validator';
-import { Role } from '@/common/enums/role.enum';
+import { IsEmail, IsInt, IsNotEmpty, IsPositive, IsString, IsStrongPassword, MaxLength } from 'class-validator';
 
-export class CreateUserDto {
+export class RegisterDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
@@ -21,8 +20,4 @@ export class CreateUserDto {
   @IsString()
   @MaxLength(1000)
   description: string;
-
-  @IsEnum(Role)
-  @IsOptional()
-  role?: Role;
 }

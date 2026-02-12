@@ -24,4 +24,7 @@ export class User extends BaseEntity {
 
   @DeleteDateColumn({ type: 'timestamptz', nullable: true })
   isDeleted?: Nullable<Date>;
+
+  @Column({ type: 'varchar', nullable: true })
+  refreshToken?: Nullable<string>;
 }

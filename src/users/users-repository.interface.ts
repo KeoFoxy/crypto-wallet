@@ -11,4 +11,5 @@ export abstract class IUsersRepository {
   abstract updateUserById(id: string, updateData: UpdateUserDto): Promise<User>;
   abstract deleteUserById(id: string): Promise<void>;
   abstract findUserByLoginOrEmail(loginOrEmail: string, withPass: boolean): Promise<Nullable<User>>;
+  abstract findUserByIdWithRefreshToken(id: string): Promise<User>;
 }

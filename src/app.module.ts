@@ -6,8 +6,8 @@ import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
 import configuration from '@/configs/configuration';
 import dbConfig from '@/configs/database.config';
-import { AuthGuard } from './auth/auth.Guard';
 import { AuthModule } from './auth/auth.module';
+import { JwtAuthGuard } from './auth/jwt/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 import { DatabaseEnvType } from './configs/types';
 import { UsersModule } from './users/users.module';
@@ -47,7 +47,7 @@ import { UsersModule } from './users/users.module';
     },
     {
       provide: APP_GUARD,
-      useClass: AuthGuard,
+      useClass: JwtAuthGuard,
     },
   ],
 })

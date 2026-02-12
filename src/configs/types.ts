@@ -1,6 +1,9 @@
 export type EnvType = {
   nodeEnv: string;
-  jwtSecret: string;
+  jwtAccessSecret: string;
+  jwtRefreshSecret: string;
+  jwtAccessExpire: string;
+  jwtRefreshExpire: string;
 };
 
 export type DatabaseEnvType = {

@@ -77,6 +77,21 @@ export class UsersRepository extends BaseRepository implements IUsersRepository 
     return user;
   }
 
+  async findUserByIdWithRefreshToken(id: string): Promise<User> {
+    const qb = this.repo().createQueryBuilder('u');
+
+    qb.addSelect('u.refreshToken');
+
+    const user = await qb.where('u.id = :v', { v: id }).getOne();
+
+    if (!user) {
+      this.logger.error(`Could not find user ${id}`);
+      throw new NotFoundException(`Could not find user ${id}`);
+    }
+
+    return user;
+  }
+
   async updateUserById(id: string, updateData: UpdateUserDto): Promise<User> {
     const userEntity = await this.repo().preload({ id, ...updateData });
     if (!userEntity) {
