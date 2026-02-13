@@ -17,12 +17,12 @@ export class UsersService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    const env = this.configService.getOrThrow<string>('nodeEnv');
+    const env = this.configService.get<string>('nodeEnv');
     if (env !== 'dev') return;
 
-    const login = this.configService.getOrThrow<string>('ADMIN_LOGIN');
-    const email = this.configService.getOrThrow<string>('ADMIN_EMAIL');
-    const password = this.configService.getOrThrow<string>('ADMIN_PASSWORD');
+    const login = this.configService.get<string>('ADMIN_LOGIN');
+    const email = this.configService.get<string>('ADMIN_EMAIL');
+    const password = this.configService.get<string>('ADMIN_PASSWORD');
 
     if (!login || !email || !password) {
       this.logger.log('Admin seed skipped: ADMIN_* env not set');
