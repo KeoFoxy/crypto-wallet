@@ -37,7 +37,7 @@ export class UsersController {
   })
   @ApiForbiddenResponse({ description: 'Forbidden (role mismatch)' })
   getAllUser(@Query() query: PaginationDto) {
-    return this.usersService.findAllUser(query);
+    return this.usersService.findAllUsers(query);
   }
 
   @Roles(Role.SuperUser)

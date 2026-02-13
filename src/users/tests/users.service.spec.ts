@@ -72,10 +72,10 @@ describe('UsersService', () => {
     });
   });
 
-  it('findAllUser delegates to repo.findAllUsers', async () => {
+  it('findAllUsers delegates to repo.findAllUsers', async () => {
     repo.findAllUsers.mockResolvedValue({ data: [USERS_MOCK.entities.userPublic], total: 1 });
 
-    await expect(service.findAllUser(USERS_MOCK.pagination as any)).resolves.toEqual({
+    await expect(service.findAllUsers(USERS_MOCK.pagination as any)).resolves.toEqual({
       data: [USERS_MOCK.entities.userPublic],
       total: 1,
     });

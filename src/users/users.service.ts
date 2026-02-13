@@ -54,7 +54,7 @@ export class UsersService implements OnModuleInit {
     return await this.usersRepository.createNewUser({ ...createUserData, password: hashPass });
   }
 
-  async findAllUser(query: PaginationDto) {
+  async findAllUsers(query: PaginationDto) {
     return await this.usersRepository.findAllUsers(query);
   }
 

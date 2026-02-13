@@ -8,7 +8,7 @@ describe('UsersController', () => {
 
   const usersService = {
     createUser: jest.fn(),
-    findAllUser: jest.fn(),
+    findAllUsers: jest.fn(),
     findUserById: jest.fn(),
     updateUserById: jest.fn(),
     deleteUserById: jest.fn(),
@@ -30,7 +30,7 @@ describe('UsersController', () => {
   });
 
   it('getAllUser calls service', async () => {
-    usersService.findAllUser.mockResolvedValue({ data: [USERS_MOCK.entities.userPublic], total: 1 });
+    usersService.findAllUsers.mockResolvedValue({ data: [USERS_MOCK.entities.userPublic], total: 1 });
     await expect(controller.getAllUser(USERS_MOCK.pagination as any)).resolves.toEqual({
       data: [USERS_MOCK.entities.userPublic],
       total: 1,
