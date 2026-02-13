@@ -1,15 +1,52 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PaginationDto } from '@/common/dtos/paginationDto.dto';
+import { Role } from '@/common/enums/role.enum';
 import { hashValue } from '@/common/utils/hashValue';
 import { CreateUserDto } from './dto/createUserDto.dto';
 import { User } from './entities/user.entity';
 import { IUsersRepository } from './users-repository.interface';
 
 @Injectable()
-export class UsersService {
+export class UsersService implements OnModuleInit {
   private readonly logger = new Logger(UsersService.name);
 
-  constructor(private readonly usersRepository: IUsersRepository) {}
+  constructor(
+    private readonly usersRepository: IUsersRepository,
+    private readonly configService: ConfigService
+  ) {}
+
+  async onModuleInit() {
+    const env = this.configService.getOrThrow<string>('nodeEnv');
+    if (env !== 'dev') return;
+
+    const login = this.configService.getOrThrow<string>('ADMIN_LOGIN');
+    const email = this.configService.getOrThrow<string>('ADMIN_EMAIL');
+    const password = this.configService.getOrThrow<string>('ADMIN_PASSWORD');
+
+    if (!login || !email || !password) {
+      this.logger.log('Admin seed skipped: ADMIN_* env not set');
+      return;
+    }
+
+    try {
+      const exists = await this.findUserByLogin(login);
+      if (exists) return;
+
+      await this.createUser({
+        login,
+        email,
+        password,
+        age: 30,
+        description: 'Seeded super user',
+        role: Role.SuperUser,
+      });
+
+      this.logger.log(`Seeded SuperUser: ${login}`);
+    } catch (e) {
+      this.logger.warn(`Admin seed failed (probably migrations not applied yet): ${e?.message ?? e}`);
+    }
+  }
 
   async createUser(createUserData: CreateUserDto) {
     const hashPass = await hashValue(createUserData.password);
