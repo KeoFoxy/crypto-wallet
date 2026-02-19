@@ -5,10 +5,7 @@ import { UsersService } from '../users.service';
 
 describe('ProfileController', () => {
   let controller: ProfileController;
-
-  const usersService = {
-    findUserById: jest.fn(),
-  };
+  const usersService = { findUserById: jest.fn() };
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -20,11 +17,13 @@ describe('ProfileController', () => {
     jest.clearAllMocks();
   });
 
-  it('my returns user by req.user.id', async () => {
+  it('my returns user by current user id', async () => {
     usersService.findUserById.mockResolvedValue(USERS_MOCK.entities.userPublic);
-    const req: any = { user: { id: USERS_MOCK.ids.userId } };
 
-    await expect(controller.my(req)).resolves.toEqual(USERS_MOCK.entities.userPublic);
+    await expect(controller.my(USERS_MOCK.entities.userWithPassword as any)).resolves.toEqual(
+      USERS_MOCK.entities.userPublic
+    );
+
     expect(usersService.findUserById).toHaveBeenCalledWith(USERS_MOCK.ids.userId);
   });
 });

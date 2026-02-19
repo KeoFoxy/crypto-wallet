@@ -110,6 +110,6 @@ describe('UsersService', () => {
       USERS_MOCK.entities.userPublic
     );
 
-    expect(repo.findUserByLoginOrEmail).toHaveBeenCalledWith(USERS_MOCK.entities.userPublic.login, false);
+    expect(repo.findUserByLoginOrEmail).toHaveBeenCalledWith(USERS_MOCK.entities.userPublic.login, { 'select': { 'password': false }});
   });
 });
