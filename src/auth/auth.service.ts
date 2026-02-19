@@ -13,6 +13,7 @@ import { JwtPayload } from './types';
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
+  private readonly WITH_PASSWORD = true;
 
   constructor(
     private readonly usersService: UsersService,
@@ -21,7 +22,7 @@ export class AuthService {
   ) {}
 
   async validateUser(username: string, password: string): Promise<User> {
-    const user = await this.usersService.findUserByLogin(username, true);
+    const user = await this.usersService.findUserByLogin(username, this.WITH_PASSWORD);
 
     if (!user) {
       this.logger.log(`User has not been found ${username}`);

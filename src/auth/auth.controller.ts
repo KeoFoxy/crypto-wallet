@@ -1,12 +1,13 @@
-import { Body, Controller, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { CurrentUser } from '@/common/decorators/currentUser.decorator';
 import { Public } from '@/common/decorators/public.decorator';
 import { AuthService } from './auth.service';
 import { RefreshDto } from './dto/refreshDto.dto';
 import { RegisterDto } from './dto/registerDto.dto';
 import { LocalAuthGuard } from './local/local-auth.guard';
 import { AUTH_MOCK } from './mocks/auth.mock';
-import type { Request } from '@/common/types/request.type';
+import type { Request, RequestUser } from '@/common/types/request.type';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -25,8 +26,8 @@ export class AuthController {
     schema: { example: AUTH_MOCK.tokens },
   })
   @ApiUnauthorizedResponse({ description: 'Invalid credentials' })
-  login(@Req() req: Request) {
-    return this.authService.login(req.user);
+  login(@CurrentUser() user: RequestUser) {
+    return this.authService.login(user);
   }
 
   @Public()
@@ -58,7 +59,7 @@ export class AuthController {
   @Post('logout')
   @ApiOperation({ summary: 'Logout (revoke refresh token in DB)' })
   @ApiNoContentResponse({ description: 'Logged out' })
-  logout(@Req() req: Request) {
-    return this.authService.logout(req.user.id);
+  logout(@CurrentUser() user: RequestUser) {
+    return this.authService.logout(user.id);
   }
 }

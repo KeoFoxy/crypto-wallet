@@ -4,6 +4,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
+import adminConfig from '@/configs/admin.config';
 import configuration from '@/configs/configuration';
 import dbConfig from '@/configs/database.config';
 import { AuthModule } from './auth/auth.module';
@@ -14,7 +15,7 @@ import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal:true, load: [configuration, dbConfig], cache: true }),
+    ConfigModule.forRoot({ isGlobal:true, load: [configuration, dbConfig, adminConfig], cache: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

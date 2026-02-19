@@ -8,6 +8,7 @@ import { BaseRepository } from '@/common/utils/base.repository';
 import { CreateUserDto } from './dto/createUserDto.dto';
 import { UpdateUserDto } from './dto/updateUserDto.dto';
 import { User } from './entities/user.entity';
+import { FindUserOptions } from './types';
 import { IUsersRepository } from './users-repository.interface';
 
 @Injectable()
@@ -77,10 +78,10 @@ export class UsersRepository extends BaseRepository implements IUsersRepository 
     return user;
   }
 
-  async findUserByLoginOrEmail(loginOrEmail: string, withPass: boolean = false): Promise<Nullable<User>> {
+  async findUserByLoginOrEmail(loginOrEmail: string, options: FindUserOptions = {}): Promise<Nullable<User>> {
     const queryBuilder = this.repo().createQueryBuilder('u');
 
-    if (withPass) {
+    if (options.select?.password) {
       queryBuilder.addSelect('u.password');
     }
 
