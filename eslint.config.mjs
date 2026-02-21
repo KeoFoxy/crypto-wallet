@@ -7,7 +7,7 @@ import stylistic from '@stylistic/eslint-plugin'
 
 export default tseslint.config(
   {
-    ignores: ['eslint.config.mjs', 'node_modules'],
+    ignores: ['eslint.config.mjs', 'node_modules', 'test'],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
